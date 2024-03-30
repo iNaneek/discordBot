@@ -1,10 +1,10 @@
 import discord
 import responses
-
+import privateKey
 
 
 def run_discord_bot():
-    TOKEN = "empty"
+    TOKEN = privateKey.TOKEN
     intents = discord.Intents.default()
     intents.message_content = True
     client = discord.Client(intents = intents)

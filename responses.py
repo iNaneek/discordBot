@@ -1,5 +1,6 @@
 import random
 from copy import deepcopy
+import csv
 
 #/removetimeout user:@Rubics Bot#3734 reason:bc
 
@@ -146,7 +147,7 @@ def format_2d_array(mat):
 
     return formatted
 
-import csv
+
 
 def read_csv_file(filename):
     data = []
