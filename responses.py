@@ -166,42 +166,61 @@ def write_csv_file(filename, data):
 # Example usage
 filename = 'data.csv'
 csv_data = read_csv_file(filename)
+
+for i in range(1, len(csv_data)):
+    csv_data[i][1] = int(csv_data[i][1])
+
 print(csv_data)
-
-
-
-
 
 
 def handle_response(message, emojis):
     global printableMat
+    print(csv_data)
     p_message = message.content.lower()
 
     print(p_message)
-    print(message.channel.id)
-    csv_data.append((message.author.name, p_message.replace('\n', '-return-').replace(',', ''), "end message"))
+    #print(message.channel.id)
+    #csv_data.append((message.author.name, p_message.replace('\n', '-return-').replace(',', ''), "end message"))
 
-    if str(message.channel.id) != "1116199621144883260" and str(message.guild.id) == "1084913611828383744":
+
+    if message.guild.id == 1084913611828383744:
+        for i, row in enumerate(csv_data):
+            if row[0] == str(message.author.id):
+                print("blah")
+                csv_data[i][1] += 1
+                write_csv_file("data.csv", csv_data)
+
+    if message.channel.id != 1116199621144883260 and message.guild.id == 1084913611828383744:
         return None
 
     #f"{emojis[printableMat[0][0]]}{emojis[printableMat[0][1]]}{emojis[printableMat[0][2]]}{emojis[printableMat[0][3]]} \n{emojis[printableMat[1][0]]}{emojis[printableMat[1][1]]}{emojis[printableMat[1][2]]}{emojis[printableMat[1][3]]} \n{emojis[printableMat[2][0]]}{emojis[printableMat[2][1]]}{emojis[printableMat[2][2]]}{emojis[printableMat[2][3]]} \n{emojis[printableMat[3][0]]}{emojis[printableMat[3][1]]}{emojis[printableMat[3][2]]}{emojis[printableMat[3][3]]}"
 
+    if p_message == "!enter":
+        for row in csv_data:
+            if row[0] == str(message.author.id):
+                return f"{message.author.name} already entered"
+        csv_data.append([str(message.author.id), message.author.name, 0])
+        return f"Added user {message.author.name}"
+
+    if p_message == 'save':
+        for i in range(len(csv_data)):
+            csv_data[i][2] = str(csv_data[i][2])
+        write_csv_file("data.csv", csv_data)
+        return "done"
 
 
     if p_message == 'test':
+        return csv_data
 
-        u = f"hehehe {emojis[0]} {emojis[1]}" + "\n"
-        return u
+
 
     if p_message == 'roll':
-        return (str(random.randint(1,6)))
+        return str(random.randint(1,6))
 
-    if p_message == '!help':
-        return "`do the helpy thing`"
+    if p_message == 'help':
+        return "`use '!enter' to enter into economy`"
 
-    if p_message == 'save':
-        write_csv_file("data.csv", csv_data)
-        return "done"
+
 
 
     if p_message == 'print':
@@ -214,28 +233,28 @@ def handle_response(message, emojis):
             printableMat = newNumberOnMat(printableMat)
             return f"{emojis[printableMat[0][0]]}{emojis[printableMat[0][1]]}{emojis[printableMat[0][2]]}{emojis[printableMat[0][3]]} \n{emojis[printableMat[1][0]]}{emojis[printableMat[1][1]]}{emojis[printableMat[1][2]]}{emojis[printableMat[1][3]]} \n{emojis[printableMat[2][0]]}{emojis[printableMat[2][1]]}{emojis[printableMat[2][2]]}{emojis[printableMat[2][3]]} \n{emojis[printableMat[3][0]]}{emojis[printableMat[3][1]]}{emojis[printableMat[3][2]]}{emojis[printableMat[3][3]]}"
         else:
-            return f"fuck you {message.author.name}, you cant do that"
+            return f"fuk you {message.author.name}, you cant do that"
     if p_message == 'w':
         if compareMatrixes(printableMat, up(deepcopy(printableMat))):
             printableMat = up(printableMat)
             printableMat = newNumberOnMat(printableMat)
             return f"{emojis[printableMat[0][0]]}{emojis[printableMat[0][1]]}{emojis[printableMat[0][2]]}{emojis[printableMat[0][3]]} \n{emojis[printableMat[1][0]]}{emojis[printableMat[1][1]]}{emojis[printableMat[1][2]]}{emojis[printableMat[1][3]]} \n{emojis[printableMat[2][0]]}{emojis[printableMat[2][1]]}{emojis[printableMat[2][2]]}{emojis[printableMat[2][3]]} \n{emojis[printableMat[3][0]]}{emojis[printableMat[3][1]]}{emojis[printableMat[3][2]]}{emojis[printableMat[3][3]]}"
         else:
-            return f"fuck you {message.author.name}, you cant do that"
+            return f"fuk you {message.author.name}, you cant do that"
     if p_message == 's':
         if compareMatrixes(printableMat, down(deepcopy(printableMat))):
             printableMat = down(printableMat)
             printableMat = newNumberOnMat(printableMat)
             return f"{emojis[printableMat[0][0]]}{emojis[printableMat[0][1]]}{emojis[printableMat[0][2]]}{emojis[printableMat[0][3]]} \n{emojis[printableMat[1][0]]}{emojis[printableMat[1][1]]}{emojis[printableMat[1][2]]}{emojis[printableMat[1][3]]} \n{emojis[printableMat[2][0]]}{emojis[printableMat[2][1]]}{emojis[printableMat[2][2]]}{emojis[printableMat[2][3]]} \n{emojis[printableMat[3][0]]}{emojis[printableMat[3][1]]}{emojis[printableMat[3][2]]}{emojis[printableMat[3][3]]}"
         else:
-            return f"fuck you {message.author.name}, you cant do that"
+            return f"fuk you {message.author.name}, you cant do that"
     if p_message == 'd':
         if compareMatrixes(printableMat, right(deepcopy(printableMat))):
             printableMat = right(printableMat)
             printableMat = newNumberOnMat(printableMat)
             return f"{emojis[printableMat[0][0]]}{emojis[printableMat[0][1]]}{emojis[printableMat[0][2]]}{emojis[printableMat[0][3]]} \n{emojis[printableMat[1][0]]}{emojis[printableMat[1][1]]}{emojis[printableMat[1][2]]}{emojis[printableMat[1][3]]} \n{emojis[printableMat[2][0]]}{emojis[printableMat[2][1]]}{emojis[printableMat[2][2]]}{emojis[printableMat[2][3]]} \n{emojis[printableMat[3][0]]}{emojis[printableMat[3][1]]}{emojis[printableMat[3][2]]}{emojis[printableMat[3][3]]}"
         else:
-            return f"fuck you {message.author.name}, you cant do that!"
+            return f"fuk you {message.author.name}, you cant do that!"
     if p_message == 'reset':
         printableMat = [
             [0, 0, 0, 0],
@@ -246,4 +265,4 @@ def handle_response(message, emojis):
         printableMat = newNumberOnMat(printableMat)
         return None
 
-    return message.content.upper()
+    #return message.content.upper()

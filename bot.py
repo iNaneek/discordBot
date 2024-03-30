@@ -1,6 +1,6 @@
 import discord
 import responses
-import privateKey
+import privateKey  # includes a private token under variable name "TOKEN"
 
 
 def run_discord_bot():
@@ -63,8 +63,6 @@ def run_discord_bot():
         except Exception as e:
             print("Error:", e)  # Debug output
 
-        except Exception as e:
-            print(e)
 
 
 
