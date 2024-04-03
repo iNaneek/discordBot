@@ -35,8 +35,6 @@ def twoOrFour(): #this returns a 2 or a 4, because when a move is made, a four h
         return 1 #prints 2
 
 def newNumberOnMat(mat): #imput a matrix, and replace a random 0 with a 1 or a 2, uses previous funtion
-    print('new')
-    print(printableMat)
     while True:
         rand1 = random.randint(0, 3)
         rand2 = random.randint(0, 3)
@@ -158,9 +156,16 @@ def read_csv_file(filename):
     return data
 
 def write_csv_file(filename, data):
+    data_strings = []
+    for y in range(len(data)):
+        row = []
+        for x in range(3):
+            row.append(str(data[y][x]))
+        data_strings.append(row)
+
     with open(filename, 'w', newline='') as file:
         writer = csv.writer(file)
-        for row in data:
+        for row in data_strings:
             writer.writerow(row)
 
 # Example usage
@@ -168,7 +173,7 @@ filename = 'data.csv'
 csv_data = read_csv_file(filename)
 
 for i in range(1, len(csv_data)):
-    csv_data[i][1] = int(csv_data[i][1])
+    csv_data[i][2] = int(csv_data[i][2])
 
 print(csv_data)
 
@@ -187,7 +192,7 @@ def handle_response(message, emojis):
         for i, row in enumerate(csv_data):
             if row[0] == str(message.author.id):
                 print("blah")
-                csv_data[i][1] += 1
+                csv_data[i][2] += 1
                 write_csv_file("data.csv", csv_data)
 
     if message.channel.id != 1116199621144883260 and message.guild.id == 1084913611828383744:
@@ -202,9 +207,37 @@ def handle_response(message, emojis):
         csv_data.append([str(message.author.id), message.author.name, 0])
         return f"Added user {message.author.name}"
 
+    position = None
+    for row in range(len(csv_data)):
+        if csv_data[row][0] == str(message.author.id):
+            position = row
+
+    if p_message == "!balance":
+        if position:
+            return f"{message.author.name} has ${csv_data[position][2]}"
+        return "Enter economy with '!enter' before using this command"
+
+    if p_message[:7] == "!gamble":
+        if position:
+            try:
+                s_message = int(p_message[8:])
+            except:
+                return "not valid integer"
+            if s_message > csv_data[position][2]:
+                return "get yo money up"
+            if random.choice([True, False]):
+                csv_data[position][2] += s_message
+                return f"you won {s_message} monies"
+            else:
+                csv_data[position][2] -= s_message
+                return f"you lost {s_message} monies"
+
+
+        return "Enter economy with '!enter' before using this command"
+
     if p_message == 'save':
-        for i in range(len(csv_data)):
-            csv_data[i][2] = str(csv_data[i][2])
+        #for i in range(len(csv_data)):
+        #    csv_data[i][2] = str(csv_data[i][2])
         write_csv_file("data.csv", csv_data)
         return "done"
 
